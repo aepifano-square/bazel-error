@@ -3,6 +3,10 @@ name: "Code Scanning - Action"
 on:
   push:
     branches: [ main ]
+    
+env:
+  CODEQL_HOME: /home/runner/work/codeql-home
+  CODEQL_BINARY: /home/runner/work/codeql-home/codeql/codeql
 
 jobs:
   CodeQL-Build:
@@ -22,6 +26,12 @@ jobs:
 
       - uses: bazelbuild/setup-bazelisk@v1
       
+      - name: Download CodeQL Bundle
+        run: |
+          cd ${{ env.CODEQL_HOME }}
+          wget -q https://github.com/github/codeql-action/releases/download/codeql-bundle-20220728/codeql-bundle-linux64.tar.gz
+          tar xzf ./codeql-bundle-linux64.tar.gz
+      
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
@@ -29,10 +39,12 @@ jobs:
         with:
           languages: java
           debug: true
-          tools: latest
+          tools: ${{ env.CODEQL_BINARY }}
 
 
       - run: |
+           echo "CODEQL VERSION!"
+           ${{ env.CODEQL_BINARY }} --version
            USE_BAZEL_VERSION=5.0.0 bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results //:ProjectRunner
 
       - name: Perform CodeQL Analysis
