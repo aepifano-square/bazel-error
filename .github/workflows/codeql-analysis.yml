@@ -2,12 +2,12 @@ name: "Code Scanning - Action"
 
 on:
   push:
-    branches: [ main ]
-    
+    branches: [ "*" ]
+
 env:
-  WORKSPACE: /home/runner/work 
+  WORKSPACE: /home/runner/work
   CODEQL_HOME: /home/runner/work/codeql-home
-  CODEQL_URL: https://github.com/github/codeql-action/releases/download/codeql-bundle-20220728/codeql-bundle-linux64.tar.gz
+  CODEQL_URL: https://github.com/github/codeql-action/releases/download/codeql-bundle-20220714/codeql-bundle-linux64.tar.gz
 
 jobs:
   CodeQL-Build:
@@ -26,12 +26,12 @@ jobs:
         uses: actions/checkout@v2
 
       - uses: bazelbuild/setup-bazelisk@v1
-      
+
       - name: Setup Required Directories and Files
         run: |
           cd ${{ env.WORKSPACE }}
           mkdir ${{ env.CODEQL_HOME }}
-      
+
       - name: Download CodeQL Bundle
         run: |
           cd ${{ env.CODEQL_HOME }}
