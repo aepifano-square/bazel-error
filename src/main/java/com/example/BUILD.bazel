@@ -1,0 +1,12 @@
+load("@io_bazel_rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+load("@io_bazel_rules_kotlin//kotlin:lint.bzl", "ktlint_config", "ktlint_fix", "ktlint_test")
+
+kt_jvm_library(
+    name = "example",
+    srcs = glob([
+        "**/*.java",
+        "**/*.kt",
+    ]),
+    exports = [],
+    deps = [],
+)

@@ -41,7 +41,7 @@ jobs:
           tools: ${{ env.CODEQL_URL }}
 
       - run: |
-           USE_BAZEL_VERSION=7.0.0 bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results //:ProjectRunner
+           USE_BAZEL_VERSION=7.0.0 bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results //src/main/java/com/example:example
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
