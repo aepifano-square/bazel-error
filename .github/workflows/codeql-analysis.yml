@@ -7,7 +7,7 @@ on:
 env:
   WORKSPACE: /home/runner/work 
   CODEQL_HOME: /home/runner/work/codeql-home
-  CODEQL_URL: https://github.com/github/codeql-action/releases/download/codeql-bundle-20220728/codeql-bundle-linux64.tar.gz
+  CODEQL_URL: https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.16.4/codeql-bundle-linux64.tar.gz
 
 jobs:
   CodeQL-Build:
@@ -31,23 +31,17 @@ jobs:
         run: |
           cd ${{ env.WORKSPACE }}
           mkdir ${{ env.CODEQL_HOME }}
-      
-      - name: Download CodeQL Bundle
-        run: |
-          cd ${{ env.CODEQL_HOME }}
-          wget -q ${{ env.CODEQL_URL }}
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: java
           debug: true
-          tools: ${{ env.CODEQL_HOME }}/codeql-bundle-linux64.tar.gz
-
+          tools: ${{ env.CODEQL_URL }}
 
       - run: |
-           USE_BAZEL_VERSION=5.0.0 bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results //:ProjectRunner
+           USE_BAZEL_VERSION=7.0.0 bazel build --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results //:ProjectRunner
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
